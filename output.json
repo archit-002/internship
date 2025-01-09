@@ -1,0 +1,51 @@
+[ {
+  "unitsDeducted" : 67,
+  "transactionPlace" : "Physical Store",
+  "loyaltyTransactionId" : "LT96927",
+  "transactionDate" : [ 2024, 2, 8, 17, 17, 46 ],
+  "transactionId" : "TX59744",
+  "products" : [ {
+    "quantity" : 4,
+    "grossValue" : 346.3,
+    "highPrecisionQuantity" : 265,
+    "name" : "Wireless Earbuds",
+    "maker" : "BrandA",
+    "branchName" : "Secondary Warehouse",
+    "category" : "Clothing",
+    "sku" : "SKU16846"
+  } ],
+  "transactionType" : "Refund",
+  "posId" : "POS483",
+  "pointsEarned" : 37,
+  "customerId" : "CUST471",
+  "assignedToCustomerDate" : [ 2024, 2, 8, 17, 17, 46 ],
+  "matched" : false,
+  "transactionValue" : 173.77,
+  "channelId" : "APP",
+  "storeCode" : "STORE45"
+}, {
+  "unitsDeducted" : 93,
+  "transactionPlace" : "Physical Store",
+  "loyaltyTransactionId" : "LT27656",
+  "transactionDate" : [ 2024, 8, 28, 13, 51, 15 ],
+  "transactionId" : "TX69004",
+  "products" : [ {
+    "quantity" : 5,
+    "grossValue" : 77.06,
+    "highPrecisionQuantity" : 622,
+    "name" : "Wireless Earbuds",
+    "maker" : "BrandA",
+    "branchName" : "Main Warehouse",
+    "category" : "Clothing",
+    "sku" : "SKU95217"
+  } ],
+  "transactionType" : "Refund",
+  "posId" : "POS891",
+  "pointsEarned" : 11,
+  "customerId" : "CUST236",
+  "assignedToCustomerDate" : [ 2024, 8, 28, 13, 51, 15 ],
+  "matched" : false,
+  "transactionValue" : 282.89,
+  "channelId" : "WEB",
+  "storeCode" : "STORE37"
+} ]

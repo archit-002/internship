@@ -1,0 +1,3 @@
+"transactionId","loyaltyTransactionId","assignedToCustomerDate","transactionType","transactionPlace","customerId","posId","transactionValue","storeCode","matched","unitsDeducted","pointsEarned","channelId","transactionDate"
+"TX59744","LT96927","2024-02-08 17:17:46","Refund","Physical Store","CUST471","POS483",173.77,"STORE45",0,67,37,"APP","2024-02-08 17:17:46"
+"TX69004","LT27656","2024-08-28 13:51:15","Refund","Physical Store","CUST236","POS891",282.89,"STORE37",1,93,11,"WEB","2024-08-28 13:51:15"
