@@ -30,7 +30,15 @@ public class CsvReader {
                 transaction.setPosId(record.get("posId"));
                 transaction.setTransactionValue(Double.parseDouble(record.get("transactionValue")));
                 transaction.setStoreCode(record.get("storeCode"));
-                transaction.setMatched(Boolean.parseBoolean(record.get("matched")));
+                String matchedValue = record.get("matched").trim();
+                if ("1".equals(matchedValue)) {
+                    transaction.setMatched(true);
+                } else if ("0".equals(matchedValue)) {
+                    transaction.setMatched(false);
+                } else {
+                    transaction.setMatched(false); // Default case
+                }
+
                 transaction.setUnitsDeducted(Integer.parseInt(record.get("unitsDeducted")));
                 transaction.setPointsEarned(Integer.parseInt(record.get("pointsEarned")));
                 transaction.setChannelId(record.get("channelId"));
