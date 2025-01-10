@@ -92,8 +92,8 @@ public class TransactionJsonMapper {
                     transactionMap.put("channelId", transaction.getChannelId());
 
                     // Apply JsonFormat to ensure the correct date format for LocalDateTime fields
-                    transactionMap.put("transactionDate", transaction.getTransactionDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                    transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    transactionMap.put("transactionDate", transaction.getTransactionDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
+                    transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
 
                     // Add custom attributes to the transaction under "customAttribute"
                     List<Map<String, Object>> customAttributesForTransaction = new ArrayList<>();
