@@ -1,11 +1,9 @@
 package internship.csv_to_json_converter_1;
-import org.apache.commons.csv.CSVRecord;
 
+import org.apache.commons.csv.CSVRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -85,7 +83,6 @@ public class TransactionJsonMapper {
                     // Adjust matched field based on input (true/false or 0/1)
                     boolean isMatched = false;
                     if (transaction.isMatched() == true || "1".equals(String.valueOf(transaction.isMatched())) || "true".equalsIgnoreCase(String.valueOf(transaction.isMatched()))) {
-
                         isMatched = true;
                     }
                     transactionMap.put("matched", isMatched);
@@ -93,14 +90,17 @@ public class TransactionJsonMapper {
                     transactionMap.put("unitsDeducted", transaction.getUnitsDeducted());
                     transactionMap.put("pointsEarned", transaction.getPointsEarned());
                     transactionMap.put("channelId", transaction.getChannelId());
-                    transactionMap.put("transactionDate", transaction.getTransactionDate());
+
+                    // Apply JsonFormat to ensure the correct date format for LocalDateTime fields
+                    transactionMap.put("transactionDate", transaction.getTransactionDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                     // Add custom attributes to the transaction under "customAttribute"
                     List<Map<String, Object>> customAttributesForTransaction = new ArrayList<>();
                     if (transactionCustomAttributesMap.containsKey(transaction.getTransactionId())) {
                         // Get the list of custom attribute IDs linked to the current transaction
                         List<CustomAttribute> linkedCustomAttributes = transactionCustomAttributesMap.get(transaction.getTransactionId());
-                        
+
                         // For each linked custom attribute, add it to the transaction's customAttribute list
                         for (CustomAttribute ca : linkedCustomAttributes) {
                             try {
@@ -236,20 +236,15 @@ public class TransactionJsonMapper {
         TransactionJsonMapper jsonMapper = new TransactionJsonMapper();
 
         // Map the data to JSON format
-        List<Map<String, Object>> jsonData = null;
-        try {
-            jsonData = jsonMapper.mapTransactionsToJson(
-                    transactions, products, tpLinks, customAttributes, transactionCustomAttributesLinks, items, productItemsLinks);
-        } catch (Exception e) {
-            System.err.println("Error mapping transactions to JSON: " + e.getMessage());
-        }
+        List<Map<String, Object>> jsonData = jsonMapper.mapTransactionsToJson(
+                transactions, products, tpLinks, customAttributes, transactionCustomAttributesLinks, items, productItemsLinks);
 
-        // Convert the result to JSON string (using Jackson ObjectMapper)
+        // Create an ObjectMapper instance with custom date format for LocalDateTime
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());  // Register the JavaTimeModule for LocalDateTime
-        try {
-            // Write the JSON output to a file
-            FileWriter fileWriter = new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output.json");
+        objectMapper.registerModule(new JavaTimeModule()); // Ensure JavaTimeModule is registered
+
+        // Write the JSON output to a file
+        try (FileWriter fileWriter = new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output.json")) {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(fileWriter, jsonData);
             System.out.println("JSON output written to output.json");
         } catch (IOException e) {
