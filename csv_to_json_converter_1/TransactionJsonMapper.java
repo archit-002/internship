@@ -1,4 +1,5 @@
 package internship.csv_to_json_converter_1;
+import org.apache.commons.csv.CSVRecord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -80,13 +81,21 @@ public class TransactionJsonMapper {
                     transactionMap.put("posId", transaction.getPosId());
                     transactionMap.put("transactionValue", transaction.getTransactionValue());
                     transactionMap.put("storeCode", transaction.getStoreCode());
-                    transactionMap.put("matched", transaction.isMatched());
+
+                    // Adjust matched field based on input (true/false or 0/1)
+                    boolean isMatched = false;
+                    if (transaction.isMatched() == true || "1".equals(String.valueOf(transaction.isMatched())) || "true".equalsIgnoreCase(String.valueOf(transaction.isMatched()))) {
+
+                        isMatched = true;
+                    }
+                    transactionMap.put("matched", isMatched);
+
                     transactionMap.put("unitsDeducted", transaction.getUnitsDeducted());
                     transactionMap.put("pointsEarned", transaction.getPointsEarned());
                     transactionMap.put("channelId", transaction.getChannelId());
                     transactionMap.put("transactionDate", transaction.getTransactionDate());
 
-                 // Add custom attributes to the transaction under "customAttribute"
+                    // Add custom attributes to the transaction under "customAttribute"
                     List<Map<String, Object>> customAttributesForTransaction = new ArrayList<>();
                     if (transactionCustomAttributesMap.containsKey(transaction.getTransactionId())) {
                         // Get the list of custom attribute IDs linked to the current transaction
@@ -105,8 +114,6 @@ public class TransactionJsonMapper {
                         }
                     }
                     transactionMap.put("customAttribute", customAttributesForTransaction);
-
-
 
                     // Find and add the products for this transaction
                     List<Map<String, Object>> productsForTransaction = new ArrayList<>();
