@@ -69,51 +69,32 @@ public class TransactionJsonMapper {
             // Create a list of transactions with nested products, customAttributes, and items
             for (Transaction transaction : transactions) {
                 try {
-                    Map<String, Object> transactionMap = new HashMap<>();
+                    Map<String, Object> transactionMap = new LinkedHashMap<>(); // LinkedHashMap ensures order
+                    // Fields in the exact specified order
                     transactionMap.put("loyaltyTransactionId", transaction.getLoyaltyTransactionId());
                     transactionMap.put("transactionId", transaction.getTransactionId());
                     transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate());
                     transactionMap.put("transactionType", transaction.getTransactionType());
                     transactionMap.put("transactionPlace", transaction.getTransactionPlace());
                     transactionMap.put("customerId", transaction.getCustomerId());
-                    transactionMap.put("posId", transaction.getPosId());
-                    transactionMap.put("transactionValue", transaction.getTransactionValue());
-                    transactionMap.put("storeCode", transaction.getStoreCode());
-
-                    // Adjust matched field based on input (true/false or 0/1)
-                    boolean isMatched = false;
-                    if (transaction.isMatched() == true || "1".equals(String.valueOf(transaction.isMatched())) || "true".equalsIgnoreCase(String.valueOf(transaction.isMatched()))) {
-                        isMatched = true;
-                    }
-                    transactionMap.put("matched", isMatched);
-
-                    transactionMap.put("unitsDeducted", transaction.getUnitsDeducted());
-                    transactionMap.put("pointsEarned", transaction.getPointsEarned());
-                    transactionMap.put("channelId", transaction.getChannelId());
-
-                    // Apply JsonFormat to ensure the correct date format for LocalDateTime fields
-                    transactionMap.put("transactionDate", transaction.getTransactionDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
-                    transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
-
-                    // Add custom attributes to the transaction under "customAttribute"
+                    
+                    // Custom attribute
                     List<Map<String, Object>> customAttributesForTransaction = new ArrayList<>();
                     if (transactionCustomAttributesMap.containsKey(transaction.getTransactionId())) {
-                        // Get the list of custom attribute IDs linked to the current transaction
                         List<CustomAttribute> linkedCustomAttributes = transactionCustomAttributesMap.get(transaction.getTransactionId());
-
-                        // For each linked custom attribute, add it to the transaction's customAttribute list
                         for (CustomAttribute ca : linkedCustomAttributes) {
-                            try {
-                                Map<String, Object> customAttributeMap = new HashMap<>();
-                                customAttributeMap.put("key", ca.getKey());
-                                customAttributeMap.put("value", ca.getValue());
-                                customAttributesForTransaction.add(customAttributeMap);
-                            } catch (Exception e) {
-                                System.err.println("Error processing custom attribute for transaction " + transaction.getTransactionId() + ": " + e.getMessage());
-                            }
+                            Map<String, Object> customAttributeMap = new HashMap<>();
+                            customAttributeMap.put("key", ca.getKey());
+                            customAttributeMap.put("value", ca.getValue());
+                            customAttributesForTransaction.add(customAttributeMap);
                         }
                     }
                     transactionMap.put("customAttribute", customAttributesForTransaction);
+
+                    // Remaining fields
+                    transactionMap.put("posId", transaction.getPosId());
+                    transactionMap.put("transactionValue", transaction.getTransactionValue());
+                    transactionMap.put("storeCode", transaction.getStoreCode());
 
                     // Find and add the products for this transaction
                     List<Map<String, Object>> productsForTransaction = new ArrayList<>();
@@ -136,14 +117,10 @@ public class TransactionJsonMapper {
                                     List<Map<String, Object>> itemsForProduct = new ArrayList<>();
                                     if (productItemsMap.containsKey(product.getSku())) {
                                         for (Items linkedItem : productItemsMap.get(product.getSku())) {
-                                            try {
-                                                Map<String, Object> itemMap = new HashMap<>();
-                                                itemMap.put("key", linkedItem.getKey());
-                                                itemMap.put("value", linkedItem.getValue());
-                                                itemsForProduct.add(itemMap);
-                                            } catch (Exception e) {
-                                                System.err.println("Error processing item for product " + product.getSku() + ": " + e.getMessage());
-                                            }
+                                            Map<String, Object> itemMap = new HashMap<>();
+                                            itemMap.put("key", linkedItem.getKey());
+                                            itemMap.put("value", linkedItem.getValue());
+                                            itemsForProduct.add(itemMap);
                                         }
                                     }
 
@@ -157,6 +134,21 @@ public class TransactionJsonMapper {
                         }
                     }
                     transactionMap.put("products", productsForTransaction);
+
+                    boolean isMatched = false;
+                    if (transaction.isMatched() == true || "1".equals(String.valueOf(transaction.isMatched())) || "true".equalsIgnoreCase(String.valueOf(transaction.isMatched()))) {
+                        isMatched = true;
+                    }
+                    transactionMap.put("matched", isMatched);
+
+                    transactionMap.put("unitsDeducted", transaction.getUnitsDeducted());
+                    transactionMap.put("pointsEarned", transaction.getPointsEarned());
+                    transactionMap.put("channelId", transaction.getChannelId());
+
+                    // Dates formatted correctly
+                    transactionMap.put("transactionDate", transaction.getTransactionDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
+                    transactionMap.put("assignedToCustomerDate", transaction.getAssignedToCustomerDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")));
+
                     transactionJsonList.add(transactionMap);
                 } catch (Exception e) {
                     System.err.println("Error processing transaction " + transaction.getTransactionId() + ": " + e.getMessage());
