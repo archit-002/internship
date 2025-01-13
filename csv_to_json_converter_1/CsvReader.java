@@ -18,7 +18,11 @@ public class CsvReader {
     public List<Transaction> readTransactions(String filePath) {
         List<Transaction> transactions = new ArrayList<>();
         try (CSVParser parser = new CSVParser(new FileReader(filePath), CSVFormat.DEFAULT.withHeader())) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // Define the date-time format
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+
+  
+//        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss a"); // Define the date-time format
             for (CSVRecord record : parser) {
                 Transaction transaction = new Transaction();
                 transaction.setTransactionId(record.get("transactionId"));
@@ -32,7 +36,7 @@ public class CsvReader {
                 transaction.setStoreCode(record.get("storeCode"));
                 String matchedValue = record.get("matched").trim();
                 if ("1".equals(matchedValue)) {
-                    transaction.setMatched(true);
+                    transaction.setMatched(true);	
                 } else if ("0".equals(matchedValue)) {
                     transaction.setMatched(false);
                 } else {
