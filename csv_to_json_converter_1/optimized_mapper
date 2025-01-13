@@ -3,6 +3,7 @@ package internship.csv_to_json_converter_1;
 import org.apache.commons.csv.CSVRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -217,10 +218,10 @@ public class TransactionJsonMapper {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()); // Ensure JavaTimeModule is registered
 
-        // Write the JSON output to a file
-        try (FileWriter fileWriter = new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output_trial.json")) {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(fileWriter, jsonData);
-            System.out.println("JSON output written to output.json");
+        // Write the JSON output to a file using BufferedWriter
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output_trial.json"))) {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(bufferedWriter, jsonData);
+            System.out.println("JSON output written to output_trial.json");
         } catch (IOException e) {
             System.err.println("Error writing JSON output: " + e.getMessage());
         }
