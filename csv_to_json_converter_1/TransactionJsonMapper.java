@@ -163,14 +163,14 @@ public class TransactionJsonMapper {
 
     public static void main(String[] args) {
         // Provide the updated file paths
-        String transactionsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transactions1.csv";
-        String productsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/products1.csv";
-        String tpFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transaction_product_link.csv";
+        String transactionsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transactions_final_formatted.csv";
+        String productsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/Products_Table.csv";
+        String tpFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transaction_product_link_trial.csv";
         
-        String customAttributeFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/customattribute1.csv";
-        String transactionCustomAttributesLinkFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transaction_customattribute_link.csv";
-        String itemsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/items1.csv";
-        String productItemsLinkFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/product_items_link.csv";
+        String customAttributeFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/custom_attribute_50k.csv";
+        String transactionCustomAttributesLinkFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/transaction_customattribute_mapping.csv";
+        String itemsFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/items_table.csv";
+        String productItemsLinkFilePath = "C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/product_items_corrected_mapping.csv";
 
         CsvReader csvReader = new CsvReader();
 
@@ -236,7 +236,7 @@ public class TransactionJsonMapper {
         objectMapper.registerModule(new JavaTimeModule()); // Ensure JavaTimeModule is registered
 
         // Write the JSON output to a file
-        try (FileWriter fileWriter = new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output.json")) {
+        try (FileWriter fileWriter = new FileWriter("C:/Users/archi/Documents/workspace-sts/csv_to_json_converter/src/main/java/internship/csv_to_json_converter_1/output_trial.json")) {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(fileWriter, jsonData);
             System.out.println("JSON output written to output.json");
         } catch (IOException e) {
